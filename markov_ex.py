@@ -49,11 +49,13 @@ Mc[3:,3:] = np.diag(np.ones(2)) # the left lower part of Mc is 1
   
 N, RN = mkv.canonic_solver(Q, R) # apply the N = (1-Q)^(-1) method
 
-ans_b = [mkv.get_canonic_data(N, RN, "ab", 1),
-         mkv.get_canonic_data(N, RN, "ab", 2),
-         mkv.get_canonic_data(N, RN, "ab", 3)]
+ans_b = [mkv.get_canonic_data(N, RN, "abs", 1),
+         mkv.get_canonic_data(N, RN, "abs", 2),
+         mkv.get_canonic_data(N, RN, "abs", 3)]
 
-
+ans_c = [mkv.get_canonic_data(N, RN, "pr", 1, 2),
+         mkv.get_canonic_data(N, RN, "pr", 2, 2),
+         mkv.get_canonic_data(N, RN, "pr", 3, 2)]
   
 #%% Ej.2: Resolver un problema más grande de estados absorventes.
 
@@ -64,4 +66,4 @@ M[0,0] = 1
 M[8,8] = 1
  
 Mc = np.zeros([9,9])
-Mc[0:6,0:6] = np.diag(np.)
+Mc[0:6,0:6] = np.diag(np.ones(8))
