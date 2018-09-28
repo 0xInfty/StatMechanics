@@ -221,7 +221,7 @@ def get_canonic_data(N, RN, datastring, index_from_1, index_to_1=None):
 
     dic = {'tr': 'transitory steps',
            'pr': 'probability',
-           'ab': 'absorvant steps'}
+           'abs': 'absorvant steps'}
     
     for key, value in dic.items():
         if key in datastring:
@@ -241,11 +241,11 @@ state starting at {} transitory state".format(
                       ans,
                       counting_suffix(index_from_1)))
     elif datastring == 'probability':
-        ans = RN[index_from_1-1, index_to_1-1]
-        print("Starting on {:.2f} transitory state, will get to \
-absorvant state with {:.3f} probability ({:.0f})".format(
-                      index_to_1,
-                      index_from_1,
+        ans = RN[index_to_1-1, index_from_1-1]
+        print("Starting on {} transitory state, will get to \
+{} absorvant state with {:.3f} probability ({:.0f}%)".format(
+                      counting_suffix(index_to_1),
+                      counting_suffix(index_from_1),
                       ans,
                       ans*100))
     
