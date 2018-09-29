@@ -52,9 +52,9 @@ def counting_suffix(number):
     
     if unit == 1:
         ans = '{}st'.format(number)
-    if unit == 2:
+    elif unit == 2:
         ans = '{}nd'.format(number)
-    if unit == 3:
+    elif unit == 3:
         ans = '{}rd'.format(number)
     else:
         ans = '{}th'.format(number)
@@ -65,7 +65,7 @@ def counting_suffix(number):
 
 def canonic_solver(Q, R):
     
-    """Returns N and R.N from Q, R extracted from M canonical matrix.
+    """Returns 'N' and 'R.N' from 'Q, R' extracted from canonic matrix.
     
     It takes the Q and R matrix from M canonical matrix of transition 
     probabilities. Then, it solves the Markov problem with absorvant 
@@ -76,12 +76,12 @@ def canonic_solver(Q, R):
     Parameters
     ----------
     Q: np.array with size (nt,nt)
-        The square matrix of transition probabilities between transitory 
+        The square matrix of transition probabilities between transient 
         states. It has size 'nt'x'nt', where nt is the number of 
-        transitory states.
+        transient states.
     R: np.array with size (na,nt)
         The non-square matrix of transition probabilities from 
-        transitory states to absorvant states. It has size 'na'x'nt', 
+        transient states to absorvant states. It has size 'na'x'nt', 
         where 'na' is the number of absorvant states.
     
     Returns
@@ -90,11 +90,11 @@ def canonic_solver(Q, R):
         The square matrix of transition probabilites raised to N power 
         where N-->inf. It has size 'nt'x'nt', same as 'Q'. Its elements 
         'N[i,j]' represent the mean number of steps it takes to get to 
-        'i' transitory state from 'j'th transitory state.
+        'i' transient state from 'j'th transient state.
     RN: np.array with size (na,nt)
         The non-square matrix of probabilities whose elements 'NR[i,j]' 
         say the probability of getting to 'i' absorvant state from 'j' 
-        transitory state.
+        transient state.
     
     Raises
     ------
@@ -112,11 +112,6 @@ def canonic_solver(Q, R):
         dimensions.
     
     """
-    
-    
-    # numpy.linalg.inv
-    # numpy.linalg.det
-    # numpy.dot
        
     try:
         m = len(Q[:,0])
@@ -143,8 +138,8 @@ def canonic_solver(Q, R):
     
     return N, RN
 
-
-def get_canonic_data(N, RN, datastring, index_from_1, index_to_1=None):
+def canonic_data(N, RN, datastring, index_from_1, 
+                 index_to_1=None, print_result=True):
     
     """Searches data on 'N', 'RN' of Markov's 'M' with absorvant states.
     
@@ -157,27 +152,35 @@ def get_canonic_data(N, RN, datastring, index_from_1, index_to_1=None):
     
     When 'datastring' includes 'pr', this function returns the 
     probability of getting to 'index_to_1' absorvant state from 
-    'index_from_1' transitory state.
+    'index_from_1' transient state.
     
     When 'index_from_1' includes 'tr', this function returns the mean 
-    number of steps it takes to get to 'index_to_1' transitory state 
-    from 'index_from_1' transitory state.
+    number of steps it takes to get to 'index_to_1' transient state 
+    from 'index_from_1' transient state.
     
     Otherwise, if 'datastring' includes 'ab', this function returns the 
     mean number of steps it takes to get absorved from 'index_from_1' 
-    transitory state.
+    transient state.
     
     Parameters
     ----------
     N: np.array with size (nt,nt)
         The square matrix of transition probabilites raised to N power 
         where N-->inf. Its elements 'N[i,j]' represent the mean number 
-        of steps it takes to get to 'i'th transitory state from 'j'th 
-        transitory state.
+        of steps it takes to get to 'i'th transient state from 'j'th 
+        transient state.
     R: np.array with size (na,nt)
         The non-square matrix of probabilities whose elements 'NR[i,j]' 
         say the probability of getting to 'i' absorvant state from 'j' 
-        transitory state.
+        transient state.
+    datastring: str including one of {'pr', 'tr', 'abs'}
+        The string that indicates what information is required.
+    index_from_1: int
+        The index of the 1-indexed state the transition starts from.
+    index_to_1=None: int, optional.
+        The index of the 1-indexed state the transition goes to.
+    print_result=True: bool, optional.
+        A parameter that decides whether to print the result or not.
 
     Returns
     -------
@@ -197,12 +200,7 @@ def get_canonic_data(N, RN, datastring, index_from_1, index_to_1=None):
         dimensions.
     
     """
-    
-    # have to count from 1 the transitory or absorvant states
-    
-    # N has dimensions TxT, same as Q
-    # R has dimensions AXT
-    
+        
     try:
         m = len(N[:,0])
     except IndexError:
@@ -219,7 +217,7 @@ def get_canonic_data(N, RN, datastring, index_from_1, index_to_1=None):
         raise TypeError("RN should be a matrix")
         return   
 
-    dic = {'tr': 'transitory steps',
+    dic = {'tr': 'transient steps',
            'pr': 'probability',
            'abs': 'absorvant steps'}
     
@@ -227,29 +225,29 @@ def get_canonic_data(N, RN, datastring, index_from_1, index_to_1=None):
         if key in datastring:
             datastring = value
     
-    if datastring == 'transitory steps':
+    if datastring == 'transient steps':
         ans = N[index_from_1-1, index_to_1-1]
-        print("It takes {:.2f} steps to get to {} transitory \
-state starting at {} transitory state".format(
+        msg = "It takes {:.2f} steps to get to {} transient \
+state starting at {} transient state".format(
                       ans,
                       counting_suffix(index_to_1),
-                      counting_suffix(index_from_1)))
+                      counting_suffix(index_from_1))
     elif datastring == 'absorvant steps':
         ans = np.dot(np.ones(m),N)[index_from_1-1]
-        print("It takes {:.2f} steps to get absorved from \
-{} transitory state".format(
+        msg = "It takes {:.2f} steps to get absorved from \
+{} transient state".format(
                       ans,
-                      counting_suffix(index_from_1)))
+                      counting_suffix(index_from_1))
     elif datastring == 'probability':
         ans = RN[index_to_1-1, index_from_1-1]
-        print("Starting on {} transitory state, will get to \
+        msg = "Starting on {} transient state, will get to \
 {} absorvant state with {:.3f} probability ({:.0f}%)".format(
-                      counting_suffix(index_to_1),
                       counting_suffix(index_from_1),
+                      counting_suffix(index_to_1),
                       ans,
-                      ans*100))
+                      ans*100)
     
-    return ans
+    if print_result:
+        print(msg)
 
-    
-    
+    return ans
