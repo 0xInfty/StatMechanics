@@ -4,13 +4,13 @@ This module contains functions to solve Markov's probability problems.
 
 Some of its useful functions are:
 
-canonic_finder():
+canonic_finder()
     Finds 'Mc' canonic matrix from 'M' transition probabilities matrix.
-canonic_decomposer():
+canonic_decomposer()
     Returns 'Q, R' matrix from 'Mc' Markov canonic transition matrix.
-canonic_solver():
+canonic_solver()
     Returns 'N' and 'R.N' from 'Q, R' partial Markov transition matrix.
-canonic_data():
+canonic_data()
     Searches data on 'N', 'RN' of Markov's 'M' with absorvant states.
 
 There are some examples of its use available at 'markov_ex.py' from 
@@ -30,12 +30,12 @@ def counting_suffix(number):
     
     Parameters
     ----------
-    number: int, float
+    number : int, float
         Any number, though it is designed to work with integers.
     
     Returns
     -------
-    ans: str
+    ans : str
         A string representing the integer number plus a suffix.
     
     Examples
@@ -78,31 +78,31 @@ def canonic_finder(M):
     
     Parameters
     ----------
-    M: numpy.array of size 'm'
+    M : numpy.array of size 'm'
         Square matrix of Markov transition probabilities. It has size 
         'mxm', where 'm' is the number of states.
     
     Returns
     -------
-    Mc: numpy.array of size 'm'
+    Mc : numpy.array of size 'm'
         Square Markov canonic matrix of transition probabilities. It 
         also has size 'mxm', same as M.
-    ab: int
+    ab : int
         Number of absorvant states.
     
     Raises
     ------
-    TypeError("M should be a matrix"):
+    TypeError : "M should be a matrix"
         if M is not a matrix.
-    TypeError("M should be a square matrix"):
+    TypeError : "M should be a square matrix"
         if M is not a square matrix.
-    ValueError("M's determinat should be 0"):
+    ValueError : "M's determinat should be 0"
         if M's determinant is not zero.
-    ValueError("M's columns should each add up to 1")
+    ValueError : "M's columns should each add up to 1"
         if any of M's column doesn't add up to 1, because in that case 
         the transition probabilities from a single state, ordered on M's 
         columns, don't add up to 1.
-    ValueError("No absorvant states found on M"):
+    ValueError : "No absorvant states found on M"
         if ab=0, since in that case Mc can't be defined.
         
     """
@@ -183,19 +183,19 @@ def canonic_decomposer(Mc, ab):
     
     Parameters
     ----------
-    Mc: numpy.array of size 'm'
+    Mc : numpy.array of size 'm'
         Square Markov canonic matrix of transition probabilities. It has 
         size 'mxm', where 'm' is the total number of states.
-    ab: int
+    ab : int
         Number of absorvant states.
     
     Returns
     -------
-    Q: numpy.array of size '(tr,tr)'
+    Q : numpy.array of size '(tr,tr)'
         Square matrix of transition probabilities from and to transient 
         states. It has size 'trxtr', where 'tr' is the number of 
         transient states.
-    R: numpy.array of size '(ab,tr)'
+    R : numpy.array of size '(ab,tr)'
         Partial matrix of transition probabilities from transient states 
         to absorvant states. It has size 'abxtr', where 'ab' is the 
         number of absorvant states and 'tr' is the number of transient 
@@ -203,13 +203,13 @@ def canonic_decomposer(Mc, ab):
     
     Raises
     ------
-    TypeError("Mc should be a matrix"):
+    TypeError : "Mc should be a matrix"
         if Mc is not a matrix.
-    TypeError("Mc should be a square matrix"):
+    TypeError : "Mc should be a square matrix"
         if Mc is not a square matrix.
-    ValueError("Mc's determinat should be 0"):
+    ValueError : "Mc's determinat should be 0"
         if Mc's determinant is not zero.
-    ValueError("Mc's columns should each add up to 1")
+    ValueError : "Mc's columns should each add up to 1"
         if any of Mc's column doesn't add up to 1, because in that case 
         the transition probabilities from a single state, ordered on 
         Mc's columns, don't add up to 1.
@@ -255,39 +255,39 @@ def canonic_solver(Q, R):
     
     Parameters
     ----------
-    Q: np.array with size (nt,nt)
+    Q : np.array with size (nt,nt)
         The square matrix of transition probabilities between transient 
         states. It has size 'nt'x'nt', where nt is the number of 
         transient states.
-    R: np.array with size (na,nt)
+    R : np.array with size (na,nt)
         The non-square matrix of transition probabilities from 
         transient states to absorvant states. It has size 'na'x'nt', 
         where 'na' is the number of absorvant states.
     
     Returns
     -------
-    N: np.array with size (nt,nt)
+    N : np.array with size (nt,nt)
         The square matrix of transition probabilites raised to N power 
         where N-->inf. It has size 'nt'x'nt', same as 'Q'. Its elements 
         'N[i,j]' represent the mean number of steps it takes to get to 
         'i' transient state from 'j'th transient state.
-    RN: np.array with size (na,nt)
+    RN : np.array with size (na,nt)
         The non-square matrix of probabilities whose elements 'NR[i,j]' 
         say the probability of getting to 'i' absorvant state from 'j' 
         transient state.
     
     Raises
     ------
-    TypeError("Q should be a matrix"):
+    TypeError : "Q should be a matrix"
         if Q is not a matrix.
-    TypeError("Q should be a square matrix"):
+    TypeError : "Q should be a square matrix"
         if Q is not a square matrix.
-    ValueError("Q's determinat is D>=1"):
+    ValueError : "Q's determinat is D>=1"
         if Q's determinant isn't less than one, because in that case the 
         method of N = inv(1-Q) is not correct.
-    TypeError("R should be a matrix")
+    TypeError : "R should be a matrix"
         if R is not a matrix.
-    TypeError("R should have as many columns as Q"):
+    TypeError : "R should have as many columns as Q"
         if R dimensions are not what should be expected from Q's 
         dimensions.
     
@@ -345,38 +345,38 @@ def canonic_data(N, RN, datastring, index_from_1,
     
     Parameters
     ----------
-    N: np.array with size (nt,nt)
+    N : np.array with size (nt,nt)
         The square matrix of transition probabilites raised to N power 
         where N-->inf. Its elements 'N[i,j]' represent the mean number 
         of steps it takes to get to 'i'th transient state from 'j'th 
         transient state.
-    R: np.array with size (na,nt)
+    R : np.array with size (na,nt)
         The non-square matrix of probabilities whose elements 'NR[i,j]' 
         say the probability of getting to 'i' absorvant state from 'j' 
         transient state.
-    datastring: str including one of {'pr', 'tr', 'abs'}
+    datastring : str including one of {'pr', 'tr', 'abs'}
         The string that indicates what information is required.
-    index_from_1: int
+    index_from_1 : int
         The index of the 1-indexed state the transition starts from.
-    index_to_1=None: int, optional.
+    index_to_1=None : int, optional.
         The index of the 1-indexed state the transition goes to.
-    print_result=True: bool, optional.
+    print_result=True : bool, optional.
         A parameter that decides whether to print the result or not.
 
     Returns
     -------
-    ans: int, float
+    ans : int, float
         The required piece of information.
 
     Raises
     ------
-    TypeError("N should be a matrix"):
+    TypeError : "N should be a matrix"
         if N is not a matrix.
-    TypeError("N should be a square matrix"):
+    TypeError : "N should be a square matrix"
         if N is not a square matrix.
-    TypeError("NR should be a matrix")
+    TypeError : "NR should be a matrix"
         if NR is not a matrix.
-    TypeError("NR should have as many columns as N"):
+    TypeError : "NR should have as many columns as N"
         if NR dimensions are not what should be expected from N's 
         dimensions.
     

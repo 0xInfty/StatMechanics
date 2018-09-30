@@ -4,9 +4,9 @@ This script includes some examples on how to use 'markov' module.
 
 Some solved exercises:
 
-Ex.1: 
+Ex.1
     3-steps drunk man's absorvant states problem.
-Ex.2:
+Ex.2
     Prisoner's 7-steps bet absorvant states problem.
    
 See also 'markov.py' on https://github.com/0xInfty/StatMechanics.git
